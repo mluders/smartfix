@@ -1,0 +1,3 @@
+# smartfix
+
+Intelligent commit squasher.

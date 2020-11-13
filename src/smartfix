@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+COUNT=0
+
+for file in $(git status --short --untracked-files=no | cut -c4-); do
+  git add $file;
+  git commit --fixup $(git log -n 1 --format=format:%H --relative='PATH' $file) && COUNT=$((COUNT+1));
+done
+
+if (($COUNT == 0)); then
+  echo "No tracked changes were detected"
+fi
+
+if (($COUNT == 1)); then
+  echo -e "\nCreated ${COUNT} commit"
+fi
+
+if (($COUNT > 1)); then
+  echo -e "\nCreated ${COUNT} commits"
+fi
+
+if (($COUNT > 0)); then
+  echo -e '\nReady for rebase:'
+  echo '    git rebase --interactive STARTING_SHA'
+fi
